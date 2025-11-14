@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Editar Evento</h2>
+<form method="post">
+    {% csrf_token %}
+    <label>Título:</label><br>
+    <input type="text" name="titulo" value="{{ evento.titulo }}" required><br><br>
+
+    <label>Descripción:</label><br>
+    <textarea name="descripcion">{{ evento.descripcion }}</textarea><br><br>
+
+    <label>Fecha:</label><br>
+    <input type="date" name="fecha" value="{{ evento.fecha }}" required><br><br>
+
+    <button type="submit">Actualizar</button>
+</form>
+<a href="{% url 'detalle_evento' evento.id %}">Volver al detalle</a>
+{% endblock %}

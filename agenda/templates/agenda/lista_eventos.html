@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    table.calendar {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        font-family: Arial, sans-serif;
+    }
+
+    table.calendar th {
+        padding: 10px;
+        background: #f7f7f7;
+        border-bottom: 2px solid #e0e0e0;
+    }
+
+    table.calendar td {
+        height: 120px;
+        vertical-align: top;
+        padding: 5px;
+        border: 1px solid #eaeaea;
+        position: relative;
+        transition: background 0.2s;
+    }
+
+    table.calendar td:hover {
+        background: #f0f7ff;
+        cursor: pointer;
+    }
+
+    .dia-hoy {
+        background: #e8f3ff !important;
+        border: 2px solid #3b73ff !important;
+    }
+
+    .evento-chip {
+        display: block;
+        margin-top: 4px;
+        padding: 2px 5px;
+        border-radius: 4px;
+        background: #d8e4ff;
+        color: #0a2a7a;
+        font-size: 12px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .dia-num {
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .dia-gris {
+    background-color: #ececec !important;
+    color: #777 !important;
+    border: 1px solid #d0d0d0;
+}
+
+</style>
+
+
+
+<h1 style="text-align:center;">
+    {{ mes_nombre }} {{ año }}
+</h1>
+
+<div style="display:flex; justify-content:center; gap:20px; margin-bottom:20px;">
+    <a href="?mes={{ mes_anterior }}&año={{ año_anterior }}" class="btn btn-secondary">◀ Mes anterior</a>
+    <a href="?mes={{ mes_siguiente }}&año={{ año_siguiente }}" class="btn btn-secondary">Mes siguiente ▶</a>
+</div>
+
+<table class="table table-bordered text-center" style="background:white;">
+    <tr>
+        <th>Lunes</th>
+        <th>Martes</th>
+        <th>Miércoles</th>
+        <th>Jueves</th>
+        <th>Viernes</th>
+        <th>Sábado</th>
+        <th>Domingo</th>
+    </tr>
+
+    {% for semana in calendario %}
+    <tr>
+        {% for dia in semana %}
+        <td class="
+    {% if not dia.pertenece %}dia-gris{% endif %}
+    {% if dia.fecha == today %}dia-hoy{% endif %}
+">
+    <div class="dia-num">
+        {% if dia.pertenece and es_directora %}
+            <a href="{% url 'crear_evento' %}?fecha={{ dia.fecha }}" 
+               style="text-decoration:none; color:#0a53be;">
+                {{ dia.dia }}
+            </a>
+        {% else %}
+            {{ dia.dia }}
+        {% endif %}
+    </div>
+
+    {% for evento in dia.eventos %}
+    <a href="{% url 'detalle_evento' evento.id %}" class="evento-chip">
+        {{ evento.titulo|truncatechars:20 }}
+            </a>
+            {% endfor %}
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+{% if es_directora %}
+<div style="text-align:center; margin-top:20px;">
+    <a href="{% url 'crear_evento' %}" class="btn btn-primary">➕ Crear evento</a>
+</div>
+{% endif %}
+
+{% endblock %}

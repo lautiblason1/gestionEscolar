@@ -1,0 +1,37 @@
+# Entorno virtual
+env/
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Variables de entorno (credenciales, claves)
+*.env
+
+# Carpetas del editor
+.vscode/
+.idea/
+
+# Archivos de logs
+*.log
+
+# Archivos de compilación y temporales
+*.DS_Store
+Thumbs.db
+
+# Archivos/migraciones que pueden ser temporales
+*.sqlite3
+
+# Archivos estáticos generados (si usás collectstatic en producción)
+staticfiles/
+
+# Archivos de pytest, coverage u otras herramientas
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Cache de Django
+*.mo
+*.pot

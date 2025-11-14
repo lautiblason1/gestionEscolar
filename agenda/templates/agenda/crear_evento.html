@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Crear Evento</h2>
+<form method="post">
+    {% csrf_token %}
+    <label>Título:</label><br>
+    <input type="text" name="titulo" required><br><br>
+
+    <label>Descripción:</label><br>
+    <textarea name="descripcion"></textarea><br><br>
+
+    <label>Fecha:</label><br>
+    <input type="date" name="fecha" required value="{{ fecha_preseleccionada }}">
+
+
+    <button type="submit">Guardar</button>
+</form>
+<a href="{% url 'agenda_index' %}">Volver</a>
+{% endblock %}
