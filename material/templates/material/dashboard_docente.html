@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Bienvenido, {{ usuario.first_name }} {{ usuario.last_name }}</h2>
+
+    <!-- MATERIAL -->
+    <h3 class="mb-2">Material educativo</h3>
+    <div class="list-group mb-4">
+        {% for m in materiales %}
+        <a href="{% url 'descargar_material' m.id %}" 
+           class="list-group-item list-group-item-action d-inline-block w-auto"
+           style="max-width: fit-content;">
+           📘 {{ m.titulo }} — Ver
+       </a>
+
+
+        {% empty %}
+        <p class="text-muted">No hay materiales disponibles.</p>
+        {% endfor %}
+    </div>
+
+    <!-- ASISTENCIAS -->
+    <h3 class="mb-2">Tus asistencias</h3>
+
+<ul class="list-group mb-4" style="max-width: fit-content;">
+    {% for a in asistencias %}
+        <li class="list-group-item px-3 py-2" style="width: fit-content;">
+            📅 {{ a.fecha|date:"d/m/Y" }}
+        </li>
+    {% empty %}
+        <li class="list-group-item text-muted" style="width: fit-content;">
+            Todavía no marcaste ninguna asistencia.
+        </li>
+    {% endfor %}
+</ul>
+
+
+</div>
+
+{% endblock %}

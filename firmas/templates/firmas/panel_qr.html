@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="text-center mb-3">QR de Asistencia</h2>
+
+<div class="text-center">
+    <!-- Imagen donde se mostrará el QR -->
+    <img id="qrImagen" src="" alt="QR dinámico" class="img-fluid mb-3" style="width: 260px;">
+
+    <!-- Cuándo expira -->
+    <p id="qrExpira" class="text-light"></p>
+
+    <button class="btn btn-primary" id="btnRegenerar">
+        Regenerar ahora
+    </button>
+</div>
+
+<script>
+    const apiUrl = "/firmas/api/regenerar_qr/";
+    const csrftoken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('csrftoken='))
+        ?.split('=')[1];
+
+    async function regenerar() {
+        const r = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrftoken,
+                "Accept": "application/json",
+            }
+        });
+
+        const data = await r.json();
+
+        // Mostrar imagen
+        document.getElementById("qrImagen").src = data.qr_image;
+
+        // Mostrar expiración
+        document.getElementById("qrExpira").textContent =
+            "Expira: " + data.expira;
+    }
+
+    document.getElementById("btnRegenerar").addEventListener("click", regenerar);
+
+    // Generar el primero al cargar la página
+    regenerar();
+</script>
+
+{% endblock %}

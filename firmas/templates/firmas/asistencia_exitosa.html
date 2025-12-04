@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="max-width:600px;margin:40px auto;text-align:center;padding:20px;border-radius:8px;">
+  <h2>Asistencia registrada ✅</h2>
+  <p>Gracias, {{ usuario.get_full_name|default:usuario.username }}. Tu presente quedó registrado correctamente.</p>
+  <a href="{% url 'dashboard_docente' %}" class="btn btn-primary">Ir al panel</a>
+</div>
+{% endblock %}

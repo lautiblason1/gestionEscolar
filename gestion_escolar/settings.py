@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-&e844j5i1xpc6lz*fd42u35@y@l1q^5p2#j5+o-rtf18ebmt4n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
 
 
 # Application definition
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'agenda',
     'firmas',
     'material',
+    'users.apps.UsersConfig',
     
 ]
 
@@ -50,8 +52,9 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'gestion_escolar.middleware.LoginRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',  
 ]
 
 ROOT_URLCONF = 'gestion_escolar.urls'
@@ -124,6 +127,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+LOGIN_URL = "login"
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

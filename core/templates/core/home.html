@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Gestión Escolar{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column justify-content-center align-items-center text-center" style="min-height: 70vh;">
+    <h1 class="display-4 text-light fade-in">Bienvenido a Gestión Escolar</h1>
+    <p class="lead text-light mt-3 fade-in-delay">Administra tus asistencias y materiales de manera fácil</p>
+
+    {% if not user.is_authenticated %}
+    <a href="{% url 'login' %}" class="btn btn-primary mt-4 btn-login fade-in-delay-2">
+        Iniciar sesión
+    </a>
+    {% endif %}
+</div>
+
+<style>
+/* Sobrescribir main solo para home */
+main {
+    margin: 0;
+    width: 100%;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* Animaciones fade in */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+.fade-in-delay {
+    opacity: 0;
+    animation: fadeIn 1s forwards 0.5s;
+}
+
+.fade-in-delay-2 {
+    opacity: 0;
+    animation: fadeIn 1s forwards 1s;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Botón estilo plug/PS2 violeta */
+.btn-login {
+    background: #6b3aff;
+    border: 1px solid #c9a7ff;
+    border-radius: 12px;
+    color: #e0d4ff;
+    padding: 8px 20px;
+    transition: 0.2s;
+}
+
+.btn-login:hover {
+    background: rgba(107, 58, 255, 0.7);
+}
+</style>
+{% endblock %}

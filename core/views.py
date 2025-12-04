@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 def home(request):
-    return HttpResponse("Bienvenido a mi proyecto")
+    # Renderizamos un template en lugar de HttpResponse
+    return render(request, "core/home.html")

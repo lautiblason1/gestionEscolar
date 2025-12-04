@@ -5,6 +5,8 @@ class Evento(models.Model):
     titulo = models.CharField(max_length=150)
     descripcion = models.TextField(blank=True, null=True)
     fecha = models.DateField()
+    privado = models.BooleanField(default=False)
+    hora = models.TimeField(null=True, blank=True)
     creado_por = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # Si querés relacionarlo con material
@@ -12,4 +14,7 @@ class Evento(models.Model):
 
     def __str__(self):
         return f"{self.titulo} ({self.fecha})"
+
+
+
 

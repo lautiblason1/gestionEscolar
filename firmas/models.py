@@ -1,14 +1,29 @@
 from django.db import models
-
-# Create your models here.
 from django.contrib.auth.models import User
-from datetime import date
+from django.utils import timezone
 
-class FirmaDiaria(models.Model):
-    docente = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'is_staff': False})
-    fecha = models.DateField(default=date.today)
-    presente = models.BooleanField(default=True)   # True si firmó
-    observacion = models.TextField(blank=True, null=True)  # Ej: "Llegó tarde"
+class TokenAsistencia(models.Model):
+    # opcional, lo podés usar más adelante; si no lo necesitás podés borrarlo
+    token = models.CharField(max_length=50, unique=True)
+    creado = models.DateTimeField(default=timezone.now)
+    expirado = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.docente.username} - {self.fecha} ({'Presente' if self.presente else 'Ausente'})"
+        return self.token
+
+class Asistencia(models.Model):
+    docente = models.ForeignKey(User, on_delete=models.CASCADE)
+    fecha = models.DateTimeField(default=timezone.now)   # guardamos fecha+hora
+    token_usado = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"Asistencia {self.docente.username} - {self.fecha}"
+
+class QRActivo(models.Model):
+    token = models.CharField(max_length=50, unique=True)
+    expira = models.DateTimeField()            # <- necesario
+    actualizado = models.DateTimeField(auto_now=True)
+    activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"QR Activo ({'Activo' if self.activo else 'Inactivo'})"

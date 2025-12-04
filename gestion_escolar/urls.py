@@ -17,12 +17,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from core import views as core_views
-
+from .views import login_view, logout_view
+from django.contrib.auth import views as auth_views
+from users import views as users_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', core_views.home),
+    path('', core_views.home, name='home'),
     path('admin/', admin.site.urls),
-    path('agenda/', include('agenda.urls')),   # 👈 rutas de la app agenda
-    path('firmas/', include('firmas.urls')),   # 👈 rutas de la app firmas
-    path('material/', include('material.urls'))
+    path('agenda/', include('agenda.urls')),  
+    path('firmas/', include('firmas.urls')),
+    path('material/', include('material.urls')),
+    # LOGIN
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+    path('registro/', users_views.registro_docente, name='registro'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

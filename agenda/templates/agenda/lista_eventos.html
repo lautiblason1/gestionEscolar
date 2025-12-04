@@ -55,7 +55,11 @@
     .dia-gris {
     background-color: #ececec !important;
     color: #777 !important;
-    border: 1px solid #d0d0d0;
+    border: 1px solid #d0d0d0;}
+
+    .dia-pasado-no-click {
+    color: #aaa;
+    cursor: not-allowed;
 }
 
 </style>
@@ -90,21 +94,36 @@
     {% if dia.fecha == today %}dia-hoy{% endif %}
 ">
     <div class="dia-num">
-        {% if dia.pertenece and es_directora %}
-            <a href="{% url 'crear_evento' %}?fecha={{ dia.fecha }}" 
-               style="text-decoration:none; color:#0a53be;">
-                {{ dia.dia }}
-            </a>
-        {% else %}
+        {% if dia.pertenece %}
+    
+    {% if dia.fecha >= today %}
+    <!-- Día clickeable -->
+    <a href="{% url 'crear_evento' %}?fecha={{ dia.fecha|date:'Y-m-d' }}" 
+       style="text-decoration:none; color:#0a53be;">
+        {{ dia.dia }}
+    </a>
+{% else %}
+
+        <!-- Día pasado: NO clickeable -->
+        <span class="dia-pasado-no-click">
             {{ dia.dia }}
-        {% endif %}
+        </span>
+    {% endif %}
+
+{% else %}
+    {{ dia.dia }}
+{% endif %}
+
     </div>
 
     {% for evento in dia.eventos %}
     <a href="{% url 'detalle_evento' evento.id %}" class="evento-chip">
+        {% if evento.hora %}
+            {{ evento.hora|time:"H:i" }} - 
+        {% endif %}
         {{ evento.titulo|truncatechars:20 }}
-            </a>
-            {% endfor %}
+    </a>
+        {% endfor %}
         </td>
         {% endfor %}
     </tr>

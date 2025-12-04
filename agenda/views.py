@@ -2,25 +2,34 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Evento
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
+from .permisos import es_directora
 
-def es_directora(user):
-    return user.groups.filter(name='Directora').exists()
+
 
 """Lista eventos mejorada"""
-#@login_required
+
 import calendar
 from datetime import date
 from django.shortcuts import render
 from .models import Evento
 
+@login_required
 def lista_eventos(request):
     from django.shortcuts import render
 from datetime import date, datetime, timedelta
 import calendar
 from .models import Evento
+from datetime import date
+
+
+MESES_ES = [
+    "", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+]
+
 
 def lista_eventos(request):
-
+    
     # 1. Obtener mes/año actual por parámetros GET
     hoy = date.today()
     mes = int(request.GET.get("mes", hoy.month))
@@ -47,7 +56,7 @@ def lista_eventos(request):
         calendario.append(fila)
 
     # 5. Datos para navegación
-    mes_nombre = calendar.month_name[mes]
+    mes_nombre = MESES_ES[mes]
 
     # mes anterior
     if mes == 1:
@@ -72,7 +81,7 @@ def lista_eventos(request):
         "mes_siguiente": mes_siguiente,
         "año_siguiente": año_siguiente,
         "today": hoy,
-        "es_directora": request.user.groups.filter(name="Directora").exists(),
+        "es_directora": es_directora(request.user),
     }
 
     # 7. Renderizar
@@ -81,13 +90,13 @@ def lista_eventos(request):
 
 
 
-#@login_required
+@login_required
 def detalle_evento(request, id):
     evento = get_object_or_404(Evento, id=id)
     return render(request, 'agenda/detalle_evento.html', {'evento': evento})
 
 """Crear evento"""
-#@login_required
+@login_required
 def crear_evento(request):
     if not es_directora(request.user):
         return HttpResponseForbidden("No tenés permiso para crear eventos.")
@@ -99,10 +108,13 @@ def crear_evento(request):
         titulo = request.POST.get('titulo')
         descripcion = request.POST.get('descripcion')
         fecha = request.POST.get('fecha')
+        hora = request.POST.get('hora')
+
         Evento.objects.create(
             titulo=titulo,
             descripcion=descripcion,
             fecha=fecha,
+            hora=hora,
             creado_por=request.user
         )
         return redirect('agenda_index')
@@ -112,7 +124,7 @@ def crear_evento(request):
     })
 
 
-#@login_required
+@login_required
 def editar_evento(request, id):
     evento = get_object_or_404(Evento, id=id)
     if evento.creado_por != request.user:
@@ -122,14 +134,16 @@ def editar_evento(request, id):
         evento.titulo = request.POST.get('titulo')
         evento.descripcion = request.POST.get('descripcion')
         evento.fecha = request.POST.get('fecha')
+        evento.hora = request.POST.get('hora')
         evento.save()
         return redirect('detalle_evento', id=evento.id)
     return render(request, 'agenda/editar_evento.html', {'evento': evento})
 
-#@login_required
+@login_required
 def eliminar_evento(request, id):
     evento = get_object_or_404(Evento, id=id)
     if evento.creado_por != request.user:
         return HttpResponseForbidden("No tenés permiso para eliminar este evento.")
     evento.delete()
     return redirect('agenda_index')
+

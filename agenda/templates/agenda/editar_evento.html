@@ -12,6 +12,9 @@
     <label>Fecha:</label><br>
     <input type="date" name="fecha" value="{{ evento.fecha }}" required><br><br>
 
+    <label>Hora:</label><br>
+    <input type="time" name="hora" value="{{ evento.hora|time:'H:i' }}"><br><br>
+
     <button type="submit">Actualizar</button>
 </form>
 <a href="{% url 'detalle_evento' evento.id %}">Volver al detalle</a>

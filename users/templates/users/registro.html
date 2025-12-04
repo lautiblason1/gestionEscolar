@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="login-wrapper">
+    <div class="login-card">
+        <h2 class="title">Crear cuenta docente</h2>
+
+        {% if form.errors %}
+            <div class="error-box">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label>Usuario</label>
+                <input type="text" name="username" required>
+            </div>
+
+            <div class="input-group">
+                <label>Nombre</label>
+                <input type="text" name="first_name" required>
+            </div>
+
+            <div class="input-group">
+                <label>Apellido</label>
+                <input type="text" name="last_name" required>
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" name="email" required>
+            </div>
+
+            <div class="input-group">
+                <label>Contraseña</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <div class="input-group">
+                <label>Año</label>
+                <input type="number" name="anio" required min="1" max="7">
+            </div>
+
+
+            <button class="btn-login">Crear cuenta</button>
+        </form>
+
+        <div class="login-link">
+            ¿Ya tenés cuenta?
+            <a href="{% url 'login' %}">Iniciar sesión</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Reusa exactamente tu estilo */
+    body {
+        background: #1b132d;
+        backdrop-filter: blur(8px);
+        font-family: 'Inter', sans-serif;
+        color: #eee;
+    }
+
+    .login-wrapper {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .login-card {
+        background: rgba(40, 25, 60, 0.55);
+        padding: 30px;
+        width: 340px;
+        border-radius: 12px;
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(120, 80, 200, 0.25);
+        box-shadow: 0 0 20px rgba(130, 90, 255, 0.25);
+    }
+
+    .title {
+        text-align: center;
+        color: #cbb6ff;
+        margin-bottom: 20px;
+    }
+
+    .input-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-size: 14px;
+        color: #d6cfff;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(170,130,255,0.3);
+        border-radius: 6px;
+        color: #eee;
+    }
+
+    .btn-login {
+        width: 100%;
+        padding: 10px;
+        background: #6d4aff;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 15px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: 0.2s;
+    }
+
+    .btn-login:hover {
+        background: #8366ff;
+    }
+
+    .error-box {
+        background: rgba(255, 80, 80, 0.15);
+        border: 1px solid rgba(255, 80, 80, 0.4);
+        color: #ffbaba;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+        text-align: center;
+    }
+
+    .login-link {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 14px;
+        color: #d4c7ff;
+    }
+
+    .login-link a {
+        color: #9d7dff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}

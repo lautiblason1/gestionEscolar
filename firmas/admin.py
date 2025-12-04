@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import TokenAsistencia, Asistencia
 
-# Register your models here.
+admin.site.register(TokenAsistencia)
+admin.site.register(Asistencia)
